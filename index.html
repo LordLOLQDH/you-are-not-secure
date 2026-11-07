@@ -73,6 +73,31 @@ h1{font-family:Arial,Helvetica,sans-serif;font-size:clamp(42px,7vw,76px);line-he
 <section class="hero"><div><div class="eyebrow">Ein Datenschutz-Realitätscheck / 001</div><h1>YOU ARE<br><em>NOT</em> SECURE.</h1><p class="lead">Was kann eine Website über dich herausfinden, nur weil du sie besuchst? Und was ändert sich, wenn du dich anmeldest? Finde es heraus. Verständlich erklärt, direkt in deinem Browser.</p><div class="actions"><button class="btn" id="startTest" type="button">TEST STARTEN →</button><a class="btn secondary" href="#accounts">WAS PASSIERT BEIM LOGIN?</a></div><p class="small" id="authStatus" aria-live="polite" style="margin-top:12px">Nicht angemeldet. Ein Google-Login ist optional.</p></div><aside class="hero-note"><strong>Keine Hacker-Tricks. Ganz normale Technik.</strong>Dein Browser verrät bei jedem Seitenaufruf bestimmte Informationen. Manche sind harmlos. In Kombination können sie dich aber wiedererkennbar machen. Dieser Test speichert deinen Bericht nicht auf unserem Server.</aside></section>
 <section class="section" id="testResultSection" style="display:none"><div class="kicker">TEST / AUSWERTUNG</div><h2>Deine Auswertung</h2><p class="sub">Hier siehst du, was dieser Browser beim Test preisgegeben hat und welche Berechtigungen du erteilt hast.</p><div class="toolbox"><div id="testProgress" class="small" aria-live="polite">Test wird vorbereitet …</div><div id="testSummary" class="result show" aria-live="polite"></div><div class="row"><button class="btn" id="downloadReport" type="button">AUSWERTUNG HERUNTERLADEN</button><button class="btn secondary" id="runAgain" type="button">NOCHMAL TESTEN</button></div></div></section>
 
+
+<section class="section" id="mediaTest"><div class="kicker">05 / Medien- und Kontotest</div><h2>Was kann die Website erfassen?</h2>
+<p class="sub">Du kannst hier selbst eine Aufnahme starten. Kamera und Mikrofon laufen niemals heimlich: Jede Aufnahme braucht einen eigenen Klick, wird sichtbar angezeigt und bleibt nur im Arbeitsspeicher dieses Tabs. Es wird nichts hochgeladen.</p>
+<div class="toolbox">
+<h3 style="margin:0 0 8px">Kamera: Foto aufnehmen</h3>
+<p class="small">Beim Klick wird die Kamera geöffnet. Das Foto wird erst aufgenommen, wenn du auf „Foto aufnehmen“ tippst.</p>
+<div class="row"><button class="btn" id="cameraPreviewBtn" type="button">KAMERA ÖFFNEN</button><button class="btn secondary" id="takePhotoBtn" type="button" disabled>FOTO AUFNEHMEN</button></div>
+<video id="cameraPreview" autoplay muted playsinline style="display:none;width:100%;max-width:480px;margin-top:12px;background:#222"></video>
+<img id="photoPreview" alt="Deine lokal aufgenommene Vorschau" style="display:none;width:100%;max-width:480px;margin-top:12px;border:1px solid #deded8">
+<div class="row"><button class="btn secondary" id="deletePhotoBtn" type="button" style="display:none">FOTO LÖSCHEN</button></div>
+<div class="section" style="padding:20px 0 0;margin-top:20px">
+<h3 style="margin:0 0 8px">Video aufnehmen</h3><p class="small">Eine sichtbare Aufnahme von maximal 5 Sekunden. Du kannst sie danach direkt hier ansehen.</p>
+<div class="row"><button class="btn" id="recordVideoBtn" type="button">5-SEKUNDEN-VIDEO STARTEN</button><button class="btn secondary" id="deleteVideoBtn" type="button" style="display:none">VIDEO LÖSCHEN</button></div>
+<video id="videoPreview" controls playsinline style="display:none;width:100%;max-width:480px;margin-top:12px;background:#222"></video><p class="small" id="videoStatus" aria-live="polite"></p>
+</div>
+<div class="section" style="padding:20px 0 0;margin-top:20px">
+<h3 style="margin:0 0 8px">Tonaufnahme</h3><p class="small">Eine sichtbare Mikrofonaufnahme von maximal 5 Sekunden. Die Tondatei wird nur lokal abgespielt.</p>
+<div class="row"><button class="btn" id="recordAudioBtn" type="button">5-SEKUNDEN-TONAUFNAHME STARTEN</button><button class="btn secondary" id="deleteAudioBtn" type="button" style="display:none">TON LÖSCHEN</button></div>
+<audio id="audioPreview" controls style="display:none;width:100%;max-width:480px;margin-top:12px"></audio><p class="small" id="audioStatus" aria-live="polite"></p>
+</div>
+<div class="notice"><strong>Vor dem Start:</strong> Achte darauf, dass keine anderen Personen oder privaten Inhalte unbeabsichtigt aufgenommen werden. Fotos, Videos und Ton werden nicht an KDS, Supabase, Google oder einen anderen Server übertragen. Beim Verlassen dieser Seite werden Vorschauen und temporäre Dateien entfernt.</div>
+</div>
+<div class="toolbox" style="margin-top:14px"><div class="kicker">Google-Kontodaten</div><h3 style="margin:8px 0">Welche Profildaten wurden freigegeben?</h3><p class="small">Nach einer erfolgreichen Google-Anmeldung zeigen wir die Basis-Profilfelder an, die Google/Supabase tatsächlich zurückgeben. Keine Passwörter, Gmail-Inhalte, Drive-Dateien oder Kontakte. Dafür wären eigene, getrennte Berechtigungen nötig.</p><div id="googleProfile" class="result show" aria-live="polite">Noch nicht angemeldet. Melde dich über „Mit Google anmelden“ an, um die zurückgegebenen Basisdaten hier zu sehen.</div><div class="row"><button class="btn secondary" id="clearGoogleData" type="button">ANGEZEIGTE KONTODATEN LÖSCHEN</button></div></div>
+</section>
+
 <section class="section" id="live"><div class="section-head"><div><div class="kicker">01 / Live-Überwachung</div><h2>Was ist gerade sichtbar?</h2><p class="sub">Die Werte werden laufend aktualisiert. Die Verbindung wird sofort überwacht. Deine öffentliche IPv4-Adresse wird erst abgefragt, wenn du die IP-Überwachung startest.</p></div><button class="btn secondary" id="refresh">↻ JETZT AKTUALISIEREN</button></div>
 <div class="dashboard"><div class="dash-top"><strong style="font-size:12px;letter-spacing:.06em">DEIN BROWSER-STATUS</strong><span class="status" id="connectionStatus"><i class="dot"></i><span>VERBINDE…</span></span></div>
 <div class="scorearea"><div class="score"><div class="score-inner"><div class="score-num" id="score">--</div><div class="score-label">DATENPUNKTE</div></div></div><div class="score-copy"><strong id="summary">Dein Browser gibt Informationen preis.</strong><p id="summaryText">Die Messung wird gestartet. Ein paar Angaben sind je nach Browser nicht verfügbar.</p><p class="small" id="lastUpdate">Letzte Aktualisierung: noch nicht erfolgt</p></div></div>
@@ -187,17 +212,99 @@ const signupFields=["Vollständiger Name","E-Mail-Adresse","Telefonnummer","Gebu
 const checks=$("signupChecks");const selected=new Set();signupFields.forEach(name=>{const label=document.createElement("label");label.className="check";const span=document.createElement("span");span.textContent=name;const input=document.createElement("input");input.type="checkbox";input.addEventListener("change",()=>{input.checked?selected.add(name):selected.delete(name);updateSignup()});label.append(span,input);checks.append(label)});
 function updateSignup(){const n=selected.size;let advice=n===0?"Wähle aus, welche Daten ein Dienst verlangt.":n<=3?"Schon wenige Angaben können dich identifizieren oder kontaktieren.":n<=7?"Mehrere Angaben ergeben bereits ein recht genaues Profil.": "Das ist ein umfangreiches Profil. Frage dich bei jedem Feld, ob es wirklich nötig ist.";const names=[...selected].join(", ");$("signupResult").textContent=n+" von "+signupFields.length+" Datenarten ausgewählt.\n"+advice+(n?"\nAusgewählt: "+names:"")}
 
+
+/* Version 0.7: sichtbare lokale Medienaufnahme und Google-Profilanzeige */
+let mediaStream=null,photoObjectUrl=null,videoObjectUrl=null,audioObjectUrl=null;
+let videoRecorder=null,audioRecorder=null,oauthInProgress=false;
+function stopMediaStream(){if(mediaStream){mediaStream.getTracks().forEach(t=>t.stop());mediaStream=null}}
+function revokeMediaUrl(name){if(name==="photo"&&photoObjectUrl){URL.revokeObjectURL(photoObjectUrl);photoObjectUrl=null}if(name==="video"&&videoObjectUrl){URL.revokeObjectURL(videoObjectUrl);videoObjectUrl=null}if(name==="audio"&&audioObjectUrl){URL.revokeObjectURL(audioObjectUrl);audioObjectUrl=null}}
+function clearMediaData(){
+ stopMediaStream();
+ ["photo","video","audio"].forEach(revokeMediaUrl);
+ const video=$("cameraPreview");video.pause();video.srcObject=null;video.removeAttribute("src");video.style.display="none";
+ const photo=$("photoPreview");photo.removeAttribute("src");photo.style.display="none";
+ const v=$("videoPreview");v.pause();v.removeAttribute("src");v.load();v.style.display="none";
+ const a=$("audioPreview");a.pause();a.removeAttribute("src");a.load();a.style.display="none";
+ $("takePhotoBtn").disabled=true;$("deletePhotoBtn").style.display="none";$("deleteVideoBtn").style.display="none";$("deleteAudioBtn").style.display="none";
+ $("videoStatus").textContent="";$("audioStatus").textContent="";
+}
+async function openCamera(){
+ try{
+  stopMediaStream();
+  if(!navigator.mediaDevices?.getUserMedia)throw Error("Kamera wird von diesem Browser nicht unterstützt.");
+  mediaStream=await navigator.mediaDevices.getUserMedia({video:{facingMode:"user"},audio:false});
+  const v=$("cameraPreview");v.srcObject=mediaStream;v.style.display="block";$("takePhotoBtn").disabled=false;
+ }catch(e){$("permissionResult").classList.add("show");$("permissionResult").textContent="Kamera konnte nicht geöffnet werden: "+e.message}
+}
+$("cameraPreviewBtn").addEventListener("click",openCamera);
+$("takePhotoBtn").addEventListener("click",()=>{
+ const v=$("cameraPreview");if(!mediaStream||!v.videoWidth)return;
+ const c=document.createElement("canvas");c.width=v.videoWidth;c.height=v.videoHeight;c.getContext("2d").drawImage(v,0,0);
+ c.toBlob(blob=>{if(!blob)return;revokeMediaUrl("photo");photoObjectUrl=URL.createObjectURL(blob);$("photoPreview").src=photoObjectUrl;$("photoPreview").style.display="block";$("deletePhotoBtn").style.display="inline-flex";stopMediaStream();v.srcObject=null;v.style.display="none";$("takePhotoBtn").disabled=true},"image/jpeg",.88);
+});
+$("deletePhotoBtn").addEventListener("click",()=>{revokeMediaUrl("photo");$("photoPreview").removeAttribute("src");$("photoPreview").style.display="none";$("deletePhotoBtn").style.display="none"});
+function recorderMime(){const types=["video/webm;codecs=vp8,opus","video/webm","video/mp4","audio/webm;codecs=opus","audio/webm","audio/mp4"];return types.find(t=>window.MediaRecorder?.isTypeSupported?.(t))||""}
+async function recordLocal(kind){
+ const isVideo=kind==="video",status=$(isVideo?"videoStatus":"audioStatus"),button=$(isVideo?"recordVideoBtn":"recordAudioBtn"),deleteButton=$(isVideo?"deleteVideoBtn":"deleteAudioBtn");
+ const preview=$(isVideo?"videoPreview":"audioPreview");button.disabled=true;status.textContent="Browser fragt nach Mikrofon"+(isVideo+" und Kamera"?" und Kamera":"")+" …";
+ let stream=null;
+ try{
+  if(!navigator.mediaDevices?.getUserMedia||!window.MediaRecorder)throw Error("Aufnahme wird von diesem Browser nicht unterstützt.");
+  stream=await navigator.mediaDevices.getUserMedia(isVideo?{video:true,audio:true}:{video:false,audio:true});
+  const mime=recorderMime();const options=mime?{mimeType:mime}:undefined;
+  const recorder=new MediaRecorder(stream,options);const chunks=[];
+  if(isVideo)videoRecorder=recorder;else audioRecorder=recorder;
+  recorder.ondataavailable=e=>{if(e.data?.size)chunks.push(e.data)};
+  recorder.onerror=()=>{status.textContent="Die Aufnahme ist fehlgeschlagen.";stream.getTracks().forEach(t=>t.stop());button.disabled=false};
+  recorder.onstop=()=>{
+   stream.getTracks().forEach(t=>t.stop());
+   const blob=new Blob(chunks,{type:recorder.mimeType|| (isVideo?"video/webm":"audio/webm")});
+   if(!blob.size){status.textContent="Keine Aufnahme erzeugt.";button.disabled=false;return}
+   revokeMediaUrl(kind);const url=URL.createObjectURL(blob);
+   if(isVideo)videoObjectUrl=url;else audioObjectUrl=url;
+   preview.src=url;preview.style.display="block";deleteButton.style.display="inline-flex";
+   status.textContent="Aufnahme fertig. Sie liegt nur vorübergehend in diesem Browser-Tab.";
+   button.disabled=false;
+  };
+  status.textContent="AUFNAHME LÄUFT · maximal 5 Sekunden";
+  recorder.start();setTimeout(()=>{if(recorder.state==="recording")recorder.stop()},5000);
+ }catch(e){if(stream)stream.getTracks().forEach(t=>t.stop());status.textContent="Aufnahme nicht möglich: "+e.message;button.disabled=false}
+}
+$("recordVideoBtn").addEventListener("click",()=>recordLocal("video"));
+$("recordAudioBtn").addEventListener("click",()=>recordLocal("audio"));
+$("deleteVideoBtn").addEventListener("click",()=>{revokeMediaUrl("video");$("videoPreview").pause();$("videoPreview").removeAttribute("src");$("videoPreview").load();$("videoPreview").style.display="none";$("deleteVideoBtn").style.display="none";$("videoStatus").textContent="Video gelöscht."});
+$("deleteAudioBtn").addEventListener("click",()=>{revokeMediaUrl("audio");$("audioPreview").pause();$("audioPreview").removeAttribute("src");$("audioPreview").load();$("audioPreview").style.display="none";$("deleteAudioBtn").style.display="none";$("audioStatus").textContent="Tonaufnahme gelöscht."});
+function displayGoogleProfile(user){
+ const out=$("googleProfile");if(!user){out.textContent="Nicht angemeldet. Es liegen keine Google-Profildaten in dieser Ansicht vor.";return}
+ const meta=user.user_metadata||{},identity=(user.identities||[]).find(x=>x.provider==="google")||{};
+ const fields=[
+ ["Name",meta.full_name||meta.name],
+ ["Vorname",meta.given_name],
+ ["Nachname",meta.family_name],
+ ["E-Mail",user.email],
+ ["E-Mail bestätigt",user.email_confirmed_at?"Ja":"Nicht bestätigt / nicht geliefert"],
+ ["Google-Profilbild",meta.avatar_url||meta.picture],
+ ["Google-Konto-Kennung",identity.id||"Nicht separat geliefert"],
+ ["Anmeldeanbieter",identity.provider||user.app_metadata?.provider||"Nicht angegeben"],
+ ["Sprache",meta.locale],
+ ["Konto erstellt (Supabase)",user.created_at]
+ ];
+ out.textContent=fields.filter(x=>x[1]).map(([k,v])=>k+": "+v).join("\n")+
+ "\n\nDatenquelle: OAuth-Basisprofil, das Google an Supabase übermittelt hat. Fehlende Felder wurden nicht freigegeben oder nicht geliefert. Es wurden keine Gmail-, Kontakte-, Kalender- oder Drive-Inhalte angefordert.";
+}
+$("clearGoogleData").addEventListener("click",()=>displayGoogleProfile(null));
+
 /* Version 0.6: geführter Gesamttest und Google-Anmeldung */
 const SUPABASE_URL="https://eopvkwhcgznvubesaszv.supabase.co";
 const SUPABASE_KEY="sb_publishable_d3hVgDqwTuB63BtfumPwoQ_ngy2ig_c";
 let supabaseClient=null;
 let lastTestReport="";
 function loadSupabase(){
- if(window.supabase?.createClient){supabaseClient=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY);return Promise.resolve(supabaseClient)}
+ if(window.supabase?.createClient){supabaseClient=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY,{auth:{storage:window.sessionStorage,persistSession:true,autoRefreshToken:true,detectSessionInUrl:true}});return Promise.resolve(supabaseClient)}
  return new Promise((resolve,reject)=>{
   const script=document.createElement("script");
   script.src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.57.4/dist/umd/supabase.min.js";
-  script.onload=()=>{try{supabaseClient=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY);resolve(supabaseClient)}catch(e){reject(e)}};
+  script.onload=()=>{try{supabaseClient=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY,{auth:{storage:window.sessionStorage,persistSession:true,autoRefreshToken:true,detectSessionInUrl:true}});resolve(supabaseClient)}catch(e){reject(e)}};
   script.onerror=()=>reject(Error("Supabase-Bibliothek konnte nicht geladen werden."));
   document.head.append(script);
  });
@@ -210,8 +317,8 @@ function setAuthStatus(user){
 async function initGoogleAuth(){
  try{
   const client=await loadSupabase();
-  const {data}=await client.auth.getSession();setAuthStatus(data.session?.user||null);
-  client.auth.onAuthStateChange((_event,session)=>setAuthStatus(session?.user||null));
+  const {data}=await client.auth.getSession();setAuthStatus(data.session?.user||null);displayGoogleProfile(data.session?.user||null);
+  client.auth.onAuthStateChange((_event,session)=>{setAuthStatus(session?.user||null);displayGoogleProfile(session?.user||null)});
  }catch(e){$("authStatus").textContent="Google-Anmeldung derzeit nicht verfügbar: "+e.message}
 }
 $("googleLogin").addEventListener("click",async()=>{
@@ -227,6 +334,7 @@ $("googleLogin").addEventListener("click",async()=>{
  finally{button.disabled=false}
 });
 initGoogleAuth();
+window.addEventListener("pagehide",()=>{clearMediaData();$("googleProfile").textContent="Kontodaten beim Verlassen entfernt.";lastTestReport="";$("testSummary").textContent="";if(!oauthInProgress){try{if(supabaseClient)supabaseClient.auth.signOut({scope:"local"});}catch(e){}try{Object.keys(sessionStorage).filter(k=>k.startsWith("sb-eopvkwhcgznvubesaszv-")).forEach(k=>sessionStorage.removeItem(k));}catch(e){}}});
 
 function wait(ms){return new Promise(resolve=>setTimeout(resolve,ms))}
 function currentPermissionState(key){return permissionStatus[key]||"unknown"}
