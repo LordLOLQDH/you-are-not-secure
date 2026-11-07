@@ -1,20 +1,28 @@
 # YOU ARE NOT SECURE.
 
-A privacy-education website that demonstrates what a normal website can learn from a browser visit.
+Eine verständliche Website zum Thema Datenschutz. Sie zeigt, welche Informationen ein Browser bei einem normalen Website-Besuch preisgeben kann und was sich nach einer Anmeldung ändern kann.
 
-## Features
-- Live, local browser exposure report.
-- Optional public-IP lookup. This explicitly contacts ipapi.co; that provider receives the visitor's IP address.
-- Local URL structure inspector; it does not visit or scan the entered site.
-- Signup data exposure simulator; checklist only, never asks for real personal data.
-- Responsive light interface. No account, backend, analytics, cookies, or report upload implemented.
+## Funktionen
 
-## Run
-Open index.html or publish with GitHub Pages from main and the repository root.
+- Live-Bericht mit Browser-, Geräte-, Sprach-, Zeit- und Bildschirmdaten.
+- Live-Anzeige des Online-/Offline-Status.
+- Optionale IPv4-Überwachung mit erneuter Prüfung alle 30 Sekunden. Der externe Dienst api4.ipify.org erhält dabei die öffentliche IP-Adresse.
+- Anzeige ausgewählter Browser-Berechtigungen, ohne Kamera, Mikrofon oder Standortzugriff anzufordern.
+- Verständliche Erklärungen zu Anmeldungen und „Mit Google anmelden“, einschließlich zusätzlicher Berechtigungen für Kontakte, Drive oder Kalender.
+- Lokaler URL-Analysator. Er besucht die eingegebene Website nicht.
+- Simulator für Daten, die ein Registrierungsformular abfragt. Keine echten persönlichen Daten eingeben.
+- Responsive Darstellung und helle Oberfläche.
 
-## Privacy and limits
-The browser report is computed locally. Hosting and network providers may still process connection metadata such as IP address and request headers. The optional IP lookup sends a request to ipapi.co. Approximate IP geolocation is not GPS.
+## Starten
 
-This project does not read passwords, private files, messages, contacts, or exact GPS location. It does not request camera, microphone, or location permissions. The URL inspector parses text locally and does not scan arbitrary websites; browser CORS and security restrictions prevent a static page from freely inspecting other origins.
+Die Datei `index.html` im Browser öffnen oder GitHub Pages für den Branch `main` und das Repository-Verzeichnis aktivieren.
 
-A real cross-site scanner would need a carefully designed backend or browser extension, explicit user consent, safe URL fetching, SSRF protections, rate limits, and clear limits around authenticated pages. Never collect credentials or attempt to bypass access controls.
+## Datenschutz und Grenzen
+
+Der Browser-Bericht wird lokal im Browser erstellt. Die Website lädt ihn nicht auf einen eigenen Server hoch. Für die optionale IPv4-Überwachung wird der externe Dienst `api4.ipify.org` kontaktiert. Dieser Dienst sieht dadurch die öffentliche IP-Adresse des Besuchers. Die Abfrage startet erst nach einem Klick und kann danach angehalten werden.
+
+Die Online-/Offline-Anzeige basiert auf `navigator.onLine` und den Browser-Ereignissen `online` und `offline`. Das zeigt den vom Browser gemeldeten Verbindungsstatus, garantiert aber nicht, dass eine bestimmte Website erreichbar ist.
+
+Eine normale Website kann nicht einfach Passwörter, private Dateien, Nachrichten oder Kontakte auslesen. Google-Anmeldungen geben nicht automatisch Zugriff auf das gesamte Google-Konto. Zusätzliche Daten wie Kontakte, Kalender oder Drive-Dateien erfordern gesonderte Berechtigungen, die vor der Freigabe geprüft werden sollten.
+
+Der URL-Analysator zerlegt nur den eingegebenen Text lokal. Er scannt keine fremden Server. Eine echte Website-Prüfung benötigt einen abgesicherten Backend-Dienst mit Schutz vor SSRF, Zugriff auf interne IP-Bereiche, gefährlichen Weiterleitungen, übergroßen Antworten und Missbrauch. Zugangsdaten dürfen niemals gesammelt oder Zugriffskontrollen umgangen werden.
