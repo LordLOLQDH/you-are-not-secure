@@ -68,9 +68,10 @@ h1{font-family:Arial,Helvetica,sans-serif;font-size:clamp(42px,7vw,76px);line-he
 </style>
 </head>
 <body>
-<header class="top wrap"><a class="brand" href="#">YOU ARE <span>NOT</span> SECURE.</a><nav class="topnav"><a href="#live">Live-Check</a><a href="#accounts">Anmeldungen</a><a href="#tools">Werkzeuge</a></nav></header>
+<header class="top wrap"><a class="brand" href="#">YOU ARE <span>NOT</span> SECURE.</a><nav class="topnav"><a href="#live">Live-Check</a><a href="#accounts">Anmeldungen</a><a href="#tools">Werkzeuge</a><button class="btn secondary" id="googleLogin" type="button">MIT GOOGLE ANMELDEN</button></nav></header>
 <main class="wrap">
-<section class="hero"><div><div class="eyebrow">Ein Datenschutz-Realitätscheck / 001</div><h1>YOU ARE<br><em>NOT</em> SECURE.</h1><p class="lead">Was kann eine Website über dich herausfinden, nur weil du sie besuchst? Und was ändert sich, wenn du dich anmeldest? Finde es heraus. Verständlich erklärt, direkt in deinem Browser.</p><div class="actions"><a class="btn" href="#live">ZEIG MIR MEINE DATEN ↓</a><a class="btn secondary" href="#accounts">WAS PASSIERT BEIM LOGIN?</a></div></div><aside class="hero-note"><strong>Keine Hacker-Tricks. Ganz normale Technik.</strong>Dein Browser verrät bei jedem Seitenaufruf bestimmte Informationen. Manche sind harmlos. In Kombination können sie dich aber wiedererkennbar machen. Dieser Test speichert deinen Bericht nicht auf unserem Server.</aside></section>
+<section class="hero"><div><div class="eyebrow">Ein Datenschutz-Realitätscheck / 001</div><h1>YOU ARE<br><em>NOT</em> SECURE.</h1><p class="lead">Was kann eine Website über dich herausfinden, nur weil du sie besuchst? Und was ändert sich, wenn du dich anmeldest? Finde es heraus. Verständlich erklärt, direkt in deinem Browser.</p><div class="actions"><button class="btn" id="startTest" type="button">TEST STARTEN →</button><a class="btn secondary" href="#accounts">WAS PASSIERT BEIM LOGIN?</a></div><p class="small" id="authStatus" aria-live="polite" style="margin-top:12px">Nicht angemeldet. Ein Google-Login ist optional.</p></div><aside class="hero-note"><strong>Keine Hacker-Tricks. Ganz normale Technik.</strong>Dein Browser verrät bei jedem Seitenaufruf bestimmte Informationen. Manche sind harmlos. In Kombination können sie dich aber wiedererkennbar machen. Dieser Test speichert deinen Bericht nicht auf unserem Server.</aside></section>
+<section class="section" id="testResultSection" style="display:none"><div class="kicker">TEST / AUSWERTUNG</div><h2>Deine Auswertung</h2><p class="sub">Hier siehst du, was dieser Browser beim Test preisgegeben hat und welche Berechtigungen du erteilt hast.</p><div class="toolbox"><div id="testProgress" class="small" aria-live="polite">Test wird vorbereitet …</div><div id="testSummary" class="result show" aria-live="polite"></div><div class="row"><button class="btn" id="downloadReport" type="button">AUSWERTUNG HERUNTERLADEN</button><button class="btn secondary" id="runAgain" type="button">NOCHMAL TESTEN</button></div></div></section>
 
 <section class="section" id="live"><div class="section-head"><div><div class="kicker">01 / Live-Überwachung</div><h2>Was ist gerade sichtbar?</h2><p class="sub">Die Werte werden laufend aktualisiert. Die Verbindung wird sofort überwacht. Deine öffentliche IPv4-Adresse wird erst abgefragt, wenn du die IP-Überwachung startest.</p></div><button class="btn secondary" id="refresh">↻ JETZT AKTUALISIEREN</button></div>
 <div class="dashboard"><div class="dash-top"><strong style="font-size:12px;letter-spacing:.06em">DEIN BROWSER-STATUS</strong><span class="status" id="connectionStatus"><i class="dot"></i><span>VERBINDE…</span></span></div>
@@ -82,7 +83,7 @@ h1{font-family:Arial,Helvetica,sans-serif;font-size:clamp(42px,7vw,76px);line-he
 
 <section class="section"><div class="kicker">02 / Weitere Browser-Daten</div><h2>Dein digitales Geräteprofil</h2><p class="sub">Diese Angaben kann eine besuchte Website je nach Browser auslesen. Es sind keine geheimen Daten, aber sie können helfen, Geräte voneinander zu unterscheiden.</p><div class="dashboard"><div class="grid" id="reportMore"></div><div class="dash-foot">Einige Browser verbergen oder vereinheitlichen solche Angaben absichtlich. „Nicht verfügbar“ bedeutet nicht, dass du etwas falsch gemacht hast.</div></div></section>
 
-<section class="section"><div class="kicker">03 / Berechtigungen</div><h2>Was darf eine Website?</h2><p class="sub">Teste selbst, welche Berechtigungen eine Website bekommen kann. Tippe bei jeder Funktion auf „Zugriff anfragen“. Erst dann öffnet der Browser seine eigene Abfrage. Du kannst jede Anfrage ablehnen.</p><div class="toolbox"><div class="permission-list" id="permissions"><div class="permission">Berechtigungen werden geprüft…</div></div><div class="result" id="permissionResult" aria-live="polite"></div><p class="small" style="margin:14px 0 0">Kamera und Mikrofon werden nach dem Test sofort wieder ausgeschaltet. Der Standort wird nur kurz abgefragt und nicht gespeichert. Der Inhalt deiner Zwischenablage wird nicht angezeigt oder gespeichert. Manche Browser, besonders iOS Safari, unterstützen einzelne Statusabfragen nicht.</p></div></section>
+<section class="section"><div class="kicker">03 / Berechtigungen</div><h2>Was darf eine Website?</h2><p class="sub">Teste selbst, welche Berechtigungen eine Website bekommen kann. Tippe bei jeder Funktion auf „Zugriff anfragen“. Erst dann öffnet der Browser seine eigene Abfrage. Du kannst jede Anfrage ablehnen.</p><div class="toolbox"><div class="permission-list" id="permissions"><div class="permission">Berechtigungen werden geprüft…</div></div><div class="result" id="permissionResult" aria-live="polite"></div><p class="small" style="margin:14px 0 0">Kamera und Mikrofon werden nach dem Test sofort wieder ausgeschaltet. Der Standort wird nur kurz abgefragt und nicht gespeichert. Der Inhalt deiner Zwischenablage wird nicht angezeigt oder gespeichert. Manche Browser, besonders iOS Safari, unterstützen einzelne Statusabfragen nicht. Du kannst jede Anfrage ablehnen.</p></div></section>
 
 <section class="section" id="accounts"><div class="kicker">04 / Was ändert sich nach dem Login?</div><h2>Ein Konto ist ein ganz anderes Level.</h2><p class="sub">Vor der Anmeldung kennt eine Website oft nur technische Signale und das, was du auf der Seite tust. Nach der Anmeldung kann sie diese Informationen mit einem Konto verbinden. Dadurch entsteht ein viel genaueres Bild.</p>
 <div class="cards">
@@ -185,5 +186,114 @@ const siteHost=$("siteChecklist");siteChecks.forEach(([title,detail])=>{const la
 const signupFields=["Vollständiger Name","E-Mail-Adresse","Telefonnummer","Geburtsdatum","Wohnadresse","Profilbild","Social-Media-Konten","Standortzugriff","Zahlungsdaten","Interessen und Vorlieben","Kontakte","Ausweisdaten","Such- und Nutzungsverlauf","Google-Konto verknüpft"];
 const checks=$("signupChecks");const selected=new Set();signupFields.forEach(name=>{const label=document.createElement("label");label.className="check";const span=document.createElement("span");span.textContent=name;const input=document.createElement("input");input.type="checkbox";input.addEventListener("change",()=>{input.checked?selected.add(name):selected.delete(name);updateSignup()});label.append(span,input);checks.append(label)});
 function updateSignup(){const n=selected.size;let advice=n===0?"Wähle aus, welche Daten ein Dienst verlangt.":n<=3?"Schon wenige Angaben können dich identifizieren oder kontaktieren.":n<=7?"Mehrere Angaben ergeben bereits ein recht genaues Profil.": "Das ist ein umfangreiches Profil. Frage dich bei jedem Feld, ob es wirklich nötig ist.";const names=[...selected].join(", ");$("signupResult").textContent=n+" von "+signupFields.length+" Datenarten ausgewählt.\n"+advice+(n?"\nAusgewählt: "+names:"")}
+
+/* Version 0.6: geführter Gesamttest und Google-Anmeldung */
+const SUPABASE_URL="https://eopvkwhcgznvubesaszv.supabase.co";
+const SUPABASE_KEY="sb_publishable_d3hVgDqwTuB63BtfumPwoQ_ngy2ig_c";
+let supabaseClient=null;
+let lastTestReport="";
+function loadSupabase(){
+ if(window.supabase?.createClient){supabaseClient=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY);return Promise.resolve(supabaseClient)}
+ return new Promise((resolve,reject)=>{
+  const script=document.createElement("script");
+  script.src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.57.4/dist/umd/supabase.min.js";
+  script.onload=()=>{try{supabaseClient=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY);resolve(supabaseClient)}catch(e){reject(e)}};
+  script.onerror=()=>reject(Error("Supabase-Bibliothek konnte nicht geladen werden."));
+  document.head.append(script);
+ });
+}
+function setAuthStatus(user){
+ const el=$("authStatus"),button=$("googleLogin");
+ if(user){el.textContent="Angemeldet als "+(user.email||user.user_metadata?.full_name||"Google-Konto")+". Dein Testbericht bleibt standardmäßig auf diesem Gerät.";button.textContent="ABMELDEN"}
+ else{el.textContent="Nicht angemeldet. Ein Google-Login ist optional.";button.textContent="MIT GOOGLE ANMELDEN"}
+}
+async function initGoogleAuth(){
+ try{
+  const client=await loadSupabase();
+  const {data}=await client.auth.getSession();setAuthStatus(data.session?.user||null);
+  client.auth.onAuthStateChange((_event,session)=>setAuthStatus(session?.user||null));
+ }catch(e){$("authStatus").textContent="Google-Anmeldung derzeit nicht verfügbar: "+e.message}
+}
+$("googleLogin").addEventListener("click",async()=>{
+ const button=$("googleLogin");button.disabled=true;
+ try{
+  const client=await loadSupabase();const {data}=await client.auth.getSession();
+  if(data.session){const {error}=await client.auth.signOut();if(error)throw error;setAuthStatus(null)}
+  else{
+   const {error}=await client.auth.signInWithOAuth({provider:"google",options:{redirectTo:window.location.href.split("#")[0],queryParams:{access_type:"online",prompt:"select_account"}}});
+   if(error)throw error;
+  }
+ }catch(e){$("authStatus").textContent="Anmeldung fehlgeschlagen: "+(e.message||"Unbekannter Fehler")+". Prüfe, ob Google als Anbieter in Supabase aktiviert ist."}
+ finally{button.disabled=false}
+});
+initGoogleAuth();
+
+function wait(ms){return new Promise(resolve=>setTimeout(resolve,ms))}
+function currentPermissionState(key){return permissionStatus[key]||"unknown"}
+async function runFullTest(){
+ const start=$("startTest"),section=$("testResultSection"),progress=$("testProgress"),summary=$("testSummary");
+ section.style.display="block";section.scrollIntoView({behavior:"smooth",block:"start"});
+ start.disabled=true;start.textContent="TEST LÄUFT …";
+ const report=["YOU ARE NOT SECURE. - TESTAUSWERTUNG", "Zeitpunkt: "+new Date().toLocaleString("de-DE"),""];
+ const add=(line)=>{report.push(line);progress.textContent=line;summary.textContent=report.join("\n")};
+ add("1/4 · Browser- und Geräteinformationen werden aktualisiert …");
+ update();setConnection();
+ report.push("Verbindung: "+(navigator.onLine?"Online":"Offline"));
+ report.push("Browser: "+navigator.userAgent);
+ report.push("Betriebssystem/Plattform: "+(navigator.platform||"Nicht verfügbar"));
+ report.push("Sprache: "+(navigator.language||"Nicht verfügbar"));
+ report.push("Zeitzone: "+(Intl.DateTimeFormat().resolvedOptions().timeZone||"Nicht verfügbar"));
+ report.push("Bildschirm: "+screen.width+" × "+screen.height);
+ report.push("Fenster: "+innerWidth+" × "+innerHeight);
+ report.push("Cookies aktiviert: "+(navigator.cookieEnabled?"Ja":"Nein"));
+ report.push("Do Not Track: "+(navigator.doNotTrack||"Nicht eingestellt"));
+ report.push("");
+ add("2/4 · Öffentliche IPv4 wird bei einem externen Dienst abgefragt …");
+ try{await checkIP();report.push($("ipResult").textContent)}catch(e){report.push("IP-Abfrage fehlgeschlagen: "+e.message)}
+ report.push("");
+ add("3/4 · Browser-Berechtigungen werden einzeln angefragt. Du kannst jede Anfrage ablehnen.");
+ const permissionResults=[];
+ for(let i=0;i<permissionNames.length;i++){
+  const [key,label]=permissionNames[i];
+  const button=document.querySelector("#permissions .permission:nth-child("+(i+1)+") button");
+  progress.textContent="Berechtigung "+(i+1)+"/"+permissionNames.length+": "+label+". Bitte die Browser-Abfrage beantworten.";
+  if(button){
+   try{await requestPermission(key,button)}catch(e){}
+  }
+  const state=currentPermissionState(key);
+  permissionResults.push({label,state});
+  report.push(label+": "+(permissionLabels[state]||"Status unbekannt"));
+  await wait(350);
+ }
+ report.push("");
+ add("4/4 · Auswertung wird erstellt …");
+ const granted=permissionResults.filter(x=>x.state==="granted").length;
+ const denied=permissionResults.filter(x=>x.state==="denied").length;
+ const unknown=permissionResults.filter(x=>x.state==="unknown"||x.state==="unsupported").length;
+ const score=Math.round((granted/permissionResults.length)*100);
+ report.push("ERGEBNIS");
+ report.push("Erlaubte Berechtigungen: "+granted+"/"+permissionResults.length);
+ report.push("Abgelehnte Berechtigungen: "+denied);
+ report.push("Nicht eindeutig prüfbare Berechtigungen: "+unknown);
+ report.push("");
+ report.push("EINORDNUNG");
+ if(granted===0)report.push("Du hast keine der abgefragten Berechtigungen freigegeben. Die Website kann die zugehörigen Funktionen dadurch nicht nutzen.");
+ else if(granted<=2)report.push("Einige Funktionen wurden freigegeben. Die Website könnte sie im Rahmen der Browserregeln nutzen, solange die Berechtigung gilt.");
+ else report.push("Mehrere sensible Berechtigungen wurden freigegeben. Prüfe in den Website-Einstellungen, ob du diese Zugriffe behalten möchtest.");
+ report.push("Wichtig: Der Test zeigt nur, was dieser Browser und diese Seite abfragen konnten. Er ist kein vollständiger Sicherheits- oder Tracking-Scan.");
+ report.push("Die öffentliche IP wurde an api4.ipify.org übermittelt. Der Testbericht wird nicht automatisch an unseren Server gesendet.");
+ lastTestReport=report.join("\n");summary.textContent=lastTestReport;
+ progress.textContent="Test abgeschlossen · "+new Date().toLocaleTimeString("de-DE");
+ start.disabled=false;start.textContent="TEST ERNEUT STARTEN →";
+}
+$("startTest").addEventListener("click",runFullTest);
+$("runAgain").addEventListener("click",runFullTest);
+$("downloadReport").addEventListener("click",()=>{
+ if(!lastTestReport)return;
+ const blob=new Blob([lastTestReport],{type:"text/plain;charset=utf-8"});
+ const url=URL.createObjectURL(blob);const a=document.createElement("a");
+ a.href=url;a.download="you-are-not-secure-auswertung.txt";a.click();URL.revokeObjectURL(url);
+});
+
 </script>
 </body></html>
