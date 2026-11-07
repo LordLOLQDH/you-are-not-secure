@@ -248,10 +248,7 @@ async function runFullTest(){
  report.push("Cookies aktiviert: "+(navigator.cookieEnabled?"Ja":"Nein"));
  report.push("Do Not Track: "+(navigator.doNotTrack||"Nicht eingestellt"));
  report.push("");
- add("2/4 · Öffentliche IPv4 wird bei einem externen Dienst abgefragt …");
- try{await checkIP();report.push($("ipResult").textContent)}catch(e){report.push("IP-Abfrage fehlgeschlagen: "+e.message)}
- report.push("");
- add("3/4 · Browser-Berechtigungen werden einzeln angefragt. Du kannst jede Anfrage ablehnen.");
+ add("2/4 · Browser-Berechtigungen werden einzeln angefragt. Du kannst jede Anfrage ablehnen.");
  const permissionResults=[];
  for(let i=0;i<permissionNames.length;i++){
   const [key,label]=permissionNames[i];
@@ -265,6 +262,9 @@ async function runFullTest(){
   report.push(label+": "+(permissionLabels[state]||"Status unbekannt"));
   await wait(350);
  }
+ report.push("");
+ add("3/4 · Öffentliche IPv4 wird bei einem externen Dienst abgefragt …");
+ try{await checkIP();report.push($("ipResult").textContent)}catch(e){report.push("IP-Abfrage fehlgeschlagen: "+e.message)}
  report.push("");
  add("4/4 · Auswertung wird erstellt …");
  const granted=permissionResults.filter(x=>x.state==="granted").length;
