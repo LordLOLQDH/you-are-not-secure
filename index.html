@@ -215,11 +215,13 @@ function updateSignup(){const n=selected.size;let advice=n===0?"Wähle aus, welc
 
 /* Version 0.7: sichtbare lokale Medienaufnahme und Google-Profilanzeige */
 let mediaStream=null,photoObjectUrl=null,videoObjectUrl=null,audioObjectUrl=null;
+const activeMediaStreams=new Set();let pageIsLeaving=false;
 let videoRecorder=null,audioRecorder=null,oauthInProgress=false;
-function stopMediaStream(){if(mediaStream){mediaStream.getTracks().forEach(t=>t.stop());mediaStream=null}}
+function stopMediaStream(){if(mediaStream){mediaStream.getTracks().forEach(t=>t.stop());activeMediaStreams.delete(mediaStream);mediaStream=null}}
 function revokeMediaUrl(name){if(name==="photo"&&photoObjectUrl){URL.revokeObjectURL(photoObjectUrl);photoObjectUrl=null}if(name==="video"&&videoObjectUrl){URL.revokeObjectURL(videoObjectUrl);videoObjectUrl=null}if(name==="audio"&&audioObjectUrl){URL.revokeObjectURL(audioObjectUrl);audioObjectUrl=null}}
 function clearMediaData(){
- stopMediaStream();
+ stopMediaStream();activeMediaStreams.forEach(stream=>stream.getTracks().forEach(t=>t.stop()));activeMediaStreams.clear();
+ if(videoRecorder?.state==="recording")videoRecorder.stop();if(audioRecorder?.state==="recording")audioRecorder.stop();
  ["photo","video","audio"].forEach(revokeMediaUrl);
  const video=$("cameraPreview");video.pause();video.srcObject=null;video.removeAttribute("src");video.style.display="none";
  const photo=$("photoPreview");photo.removeAttribute("src");photo.style.display="none";
@@ -232,7 +234,7 @@ async function openCamera(){
  try{
   stopMediaStream();
   if(!navigator.mediaDevices?.getUserMedia)throw Error("Kamera wird von diesem Browser nicht unterstützt.");
-  mediaStream=await navigator.mediaDevices.getUserMedia({video:{facingMode:"user"},audio:false});
+  mediaStream=await navigator.mediaDevices.getUserMedia({video:{facingMode:"user"},audio:false});activeMediaStreams.add(mediaStream);
   const v=$("cameraPreview");v.srcObject=mediaStream;v.style.display="block";$("takePhotoBtn").disabled=false;
  }catch(e){$("permissionResult").classList.add("show");$("permissionResult").textContent="Kamera konnte nicht geöffnet werden: "+e.message}
 }
@@ -243,21 +245,22 @@ $("takePhotoBtn").addEventListener("click",()=>{
  c.toBlob(blob=>{if(!blob)return;revokeMediaUrl("photo");photoObjectUrl=URL.createObjectURL(blob);$("photoPreview").src=photoObjectUrl;$("photoPreview").style.display="block";$("deletePhotoBtn").style.display="inline-flex";stopMediaStream();v.srcObject=null;v.style.display="none";$("takePhotoBtn").disabled=true},"image/jpeg",.88);
 });
 $("deletePhotoBtn").addEventListener("click",()=>{revokeMediaUrl("photo");$("photoPreview").removeAttribute("src");$("photoPreview").style.display="none";$("deletePhotoBtn").style.display="none"});
-function recorderMime(){const types=["video/webm;codecs=vp8,opus","video/webm","video/mp4","audio/webm;codecs=opus","audio/webm","audio/mp4"];return types.find(t=>window.MediaRecorder?.isTypeSupported?.(t))||""}
+function recorderMime(kind){const types=kind==="video"?["video/webm;codecs=vp8,opus","video/webm","video/mp4"]:["audio/webm;codecs=opus","audio/webm","audio/mp4"];return types.find(t=>window.MediaRecorder?.isTypeSupported?.(t))||""}
 async function recordLocal(kind){
  const isVideo=kind==="video",status=$(isVideo?"videoStatus":"audioStatus"),button=$(isVideo?"recordVideoBtn":"recordAudioBtn"),deleteButton=$(isVideo?"deleteVideoBtn":"deleteAudioBtn");
- const preview=$(isVideo?"videoPreview":"audioPreview");button.disabled=true;status.textContent="Browser fragt nach Mikrofon"+(isVideo+" und Kamera"?" und Kamera":"")+" …";
+ const preview=$(isVideo?"videoPreview":"audioPreview");button.disabled=true;status.textContent=isVideo?"Browser fragt nach Kamera und Mikrofon …":"Browser fragt nach Mikrofon …";
  let stream=null;
  try{
   if(!navigator.mediaDevices?.getUserMedia||!window.MediaRecorder)throw Error("Aufnahme wird von diesem Browser nicht unterstützt.");
-  stream=await navigator.mediaDevices.getUserMedia(isVideo?{video:true,audio:true}:{video:false,audio:true});
-  const mime=recorderMime();const options=mime?{mimeType:mime}:undefined;
+  stream=await navigator.mediaDevices.getUserMedia(isVideo?{video:true,audio:true}:{video:false,audio:true});activeMediaStreams.add(stream);
+  const mime=recorderMime(kind);const options=mime?{mimeType:mime}:undefined;
   const recorder=new MediaRecorder(stream,options);const chunks=[];
   if(isVideo)videoRecorder=recorder;else audioRecorder=recorder;
   recorder.ondataavailable=e=>{if(e.data?.size)chunks.push(e.data)};
   recorder.onerror=()=>{status.textContent="Die Aufnahme ist fehlgeschlagen.";stream.getTracks().forEach(t=>t.stop());button.disabled=false};
   recorder.onstop=()=>{
-   stream.getTracks().forEach(t=>t.stop());
+   stream.getTracks().forEach(t=>t.stop());activeMediaStreams.delete(stream);
+   if(pageIsLeaving){button.disabled=false;return}
    const blob=new Blob(chunks,{type:recorder.mimeType|| (isVideo?"video/webm":"audio/webm")});
    if(!blob.size){status.textContent="Keine Aufnahme erzeugt.";button.disabled=false;return}
    revokeMediaUrl(kind);const url=URL.createObjectURL(blob);
@@ -268,7 +271,7 @@ async function recordLocal(kind){
   };
   status.textContent="AUFNAHME LÄUFT · maximal 5 Sekunden";
   recorder.start();setTimeout(()=>{if(recorder.state==="recording")recorder.stop()},5000);
- }catch(e){if(stream)stream.getTracks().forEach(t=>t.stop());status.textContent="Aufnahme nicht möglich: "+e.message;button.disabled=false}
+ }catch(e){if(stream){stream.getTracks().forEach(t=>t.stop());activeMediaStreams.delete(stream)}status.textContent="Aufnahme nicht möglich: "+e.message;button.disabled=false}
 }
 $("recordVideoBtn").addEventListener("click",()=>recordLocal("video"));
 $("recordAudioBtn").addEventListener("click",()=>recordLocal("audio"));
@@ -334,7 +337,8 @@ $("googleLogin").addEventListener("click",async()=>{
  finally{button.disabled=false}
 });
 initGoogleAuth();
-window.addEventListener("pagehide",()=>{clearMediaData();$("googleProfile").textContent="Kontodaten beim Verlassen entfernt.";lastTestReport="";$("testSummary").textContent="";if(!oauthInProgress){try{if(supabaseClient)supabaseClient.auth.signOut({scope:"local"});}catch(e){}try{Object.keys(sessionStorage).filter(k=>k.startsWith("sb-eopvkwhcgznvubesaszv-")).forEach(k=>sessionStorage.removeItem(k));}catch(e){}}});
+window.addEventListener("pageshow",()=>{pageIsLeaving=false});
+window.addEventListener("pagehide",()=>{pageIsLeaving=true;clearMediaData();$("googleProfile").textContent="Kontodaten beim Verlassen entfernt.";lastTestReport="";$("testSummary").textContent="";if(!oauthInProgress){try{if(supabaseClient)supabaseClient.auth.signOut({scope:"local"});}catch(e){}try{Object.keys(sessionStorage).filter(k=>k.startsWith("sb-eopvkwhcgznvubesaszv-")).forEach(k=>sessionStorage.removeItem(k));}catch(e){}}});
 
 function wait(ms){return new Promise(resolve=>setTimeout(resolve,ms))}
 function currentPermissionState(key){return permissionStatus[key]||"unknown"}
